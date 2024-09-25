@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "lint:format": "npx --no-install lint-staged && npx --no-install pretty-quick --staged",
-    "azure:deploy": "az storage blob upload-batch -s './dist/app/browser' -d '$web' --account-name 'stgsandfrontendne001' --overwrite",
+    "azure:deploy": "az storage blob upload-batch -s './dist/app/browser' -d '$web' --account-name 'sandboxfrontend01' --overwrite",
     "build-and-deploy": "npm run build && npm run azure:deploy"
   },
   "private": true,

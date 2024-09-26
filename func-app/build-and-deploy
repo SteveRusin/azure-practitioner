@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+npm run clean
+npm run build
+npm run copy-artifacts
+rm ./deployment.zip || true
+pushd dist
+npm prune --omit=dev
+zip -r -9 ../deployment.zip ./.
+popd
+
+./deploy
+

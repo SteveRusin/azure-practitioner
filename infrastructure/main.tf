@@ -107,14 +107,3 @@ resource "azurerm_windows_function_app" "products_service" {
   }
 }
 
-resource "azurerm_windows_function_app_slot" "example" {
-  name                       = "staging"
-  function_app_id            = azurerm_windows_function_app.products_service.id
-  storage_account_name       = azurerm_storage_account.products_service_fa.name
-  storage_account_access_key = azurerm_storage_account.products_service_fa.primary_access_key
-  builtin_logging_enabled    = true
-
-  site_config {
-    auto_swap_slot_name = "production"
-  }
-}

@@ -4,13 +4,8 @@ import {
   HttpResponseInit,
   InvocationContext,
 } from "@azure/functions";
-import { AppConfigurationClient } from "@azure/app-configuration";
 
 const connection_string = process.env.AZURE_APP_CONFIG_CONNECTION_STRING;
-const client = new AppConfigurationClient(connection_string);
-const exampleKey = client.getConfigurationSetting({
-  key: "EXAMPLE_KEY",
-});
 
 import { mockedProducts } from "../mock";
 
@@ -18,8 +13,6 @@ export async function httpGetProductById(
   request: HttpRequest,
   context: InvocationContext,
 ): Promise<HttpResponseInit> {
-  const { value } = await exampleKey;
-  context.log(`Got variable from App Configuration: ${value}`);
   const productId = request.params["id"];
 
   if (productId == null) {

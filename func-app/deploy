@@ -5,11 +5,9 @@ set -e
 RESOURSE_GROUP=rg-product-service-sand-ne-001
 NAME=fa-products-service-sand-ne-001
 SRC=./deployment.zip
-SLOT=staging
 
 az functionapp deployment source config-zip \
   --resource-group $RESOURSE_GROUP \
   --name $NAME \
   --src $SRC \
-  --slot $SLOT # will auto swap
 

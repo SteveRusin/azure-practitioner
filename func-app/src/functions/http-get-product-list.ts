@@ -5,15 +5,18 @@ import {
   InvocationContext,
 } from "@azure/functions";
 import { mockedProducts } from "../mock";
+import { getAllProducts } from "../db";
 
 export async function httpGetProductList(
   request: HttpRequest,
   context: InvocationContext,
 ): Promise<HttpResponseInit> {
   context.log(`Got request for GET products`);
+  const products = await getAllProducts();
+  context.info("Received next products", products);
 
   return {
-    jsonBody: mockedProducts,
+    jsonBody: products,
   };
 }
 

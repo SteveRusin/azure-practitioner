@@ -1,11 +1,11 @@
 import { CosmosClient, OperationInput } from "@azure/cosmos";
 import { faker } from "@faker-js/faker";
 import { DefaultAzureCredential } from "@azure/identity";
-import { Product, Stock } from "src/models";
+import { ProductEntity, StockEntity } from "src/models";
 
 import { productsContainer, stocksContainer } from "src/db";
 
-function generateRandomProduct(id: string): Product {
+function generateRandomProduct(id: string): ProductEntity {
   return {
     id,
     title: faker.commerce.productName(),
@@ -14,8 +14,9 @@ function generateRandomProduct(id: string): Product {
   };
 }
 
-function generateRandomStock(productId: string): Stock {
+function generateRandomStock(productId: string): StockEntity {
   return {
+    id: productId,
     product_id: productId,
     count: faker.number.int({ min: 1, max: 10 }),
   };

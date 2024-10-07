@@ -4,8 +4,7 @@ import {
   HttpResponseInit,
   InvocationContext,
 } from "@azure/functions";
-
-const connection_string = process.env.AZURE_APP_CONFIG_CONNECTION_STRING;
+import { getProductById } from "../db";
 
 import { mockedProducts } from "../mock";
 
@@ -14,6 +13,8 @@ export async function httpGetProductById(
   context: InvocationContext,
 ): Promise<HttpResponseInit> {
   const productId = request.params["id"];
+
+  context.log(`Got request for product: ${productId}`)
 
   if (productId == null) {
     return {
@@ -24,7 +25,8 @@ export async function httpGetProductById(
     };
   }
 
-  const product = mockedProducts.find((product) => product.id === productId);
+  const product = await getProductById(productId);
+  context.info(`Got product`, productId);
 
   if (product == null) {
     return {

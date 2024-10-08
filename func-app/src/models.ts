@@ -1,3 +1,17 @@
+import { number, string, z } from "zod";
+
+export const productSchema = z.object({
+  id: string(),
+  title: string(),
+  description: string(),
+  price: number().positive(),
+  count: number().positive(),
+});
+
+export const productDtoSchema = productSchema.omit({
+  id: true,
+});
+
 export type ProductEntity = {
   id: string; // UUID, primary and partition key
   title: string;
@@ -11,10 +25,5 @@ export type StockEntity = {
   count: number;
 };
 
-export type Product = {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  count: number;
-};
+export type ProductDto = z.infer<typeof productDtoSchema>
+export type Product = z.infer<typeof productSchema>;

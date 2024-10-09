@@ -7,6 +7,7 @@ import {
 import { getProductById } from "../db";
 
 import { mockedProducts } from "../mock";
+import { zodMiddleware } from '../middlewares';
 
 export async function httpGetProductById(
   request: HttpRequest,
@@ -43,8 +44,8 @@ export async function httpGetProductById(
 }
 
 app.http("http-get-product-by-id", {
-  route: "products/{id}",
+  route: "products/{id:guid}",
   methods: ["GET"],
   authLevel: "anonymous",
-  handler: httpGetProductById,
+  handler: zodMiddleware(httpGetProductById),
 });

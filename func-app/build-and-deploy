@@ -3,12 +3,12 @@
 set -e
 
 npm run clean
-npm run build
+npm run build:prod
 npm run copy-artifacts
 rm ./deployment.zip || true
 pushd dist
 npm prune --omit=dev
-zip -r -9 ../deployment.zip ./.
+zip -r ../deployment.zip ./.
 popd
 
 ./deploy

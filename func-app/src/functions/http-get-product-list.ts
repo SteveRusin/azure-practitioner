@@ -6,6 +6,7 @@ import {
 } from "@azure/functions";
 import { mockedProducts } from "../mock";
 import { getAllProducts } from "../db";
+import { zodMiddleware } from "../middlewares";
 
 export async function httpGetProductList(
   request: HttpRequest,
@@ -24,5 +25,5 @@ app.http("http-get-product-list", {
   methods: ["GET"],
   route: "products",
   authLevel: "anonymous",
-  handler: httpGetProductList,
+  handler: zodMiddleware(httpGetProductList),
 });

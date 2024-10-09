@@ -1,9 +1,8 @@
-import { CosmosClient, OperationInput } from "@azure/cosmos";
+import { OperationInput } from "@azure/cosmos";
 import { faker } from "@faker-js/faker";
-import { DefaultAzureCredential } from "@azure/identity";
 import { ProductEntity, StockEntity } from "src/models";
 
-import { productsContainer, stocksContainer } from "src/db";
+import { getStocksContainer, getProductsContainer } from "src/db";
 
 function generateRandomProduct(id: string): ProductEntity {
   return {
@@ -40,7 +39,6 @@ export async function seed() {
     };
   });
 
-
-  await productsContainer.items.bulk(productsOperations);
-  await stocksContainer.items.bulk(stockOperations);
+  await getProductsContainer().items.bulk(productsOperations);
+  await getStocksContainer().items.bulk(stockOperations);
 }

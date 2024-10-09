@@ -6,14 +6,9 @@ import {
 } from "@azure/functions";
 import { randomUUID } from "crypto";
 
-import {
-  Product,
-  productDtoSchema,
-  ProductEntity,
-  StockEntity,
-} from "../models";
+import { productDtoSchema, ProductEntity, StockEntity } from "../models";
 import { zodMiddleware } from "../middlewares";
-import { productsContainer, stocksContainer } from "../db";
+import { getStocksContainer, getProductsContainer } from "../db";
 
 export async function httpPostProduct(
   request: HttpRequest,
@@ -30,7 +25,7 @@ export async function httpPostProduct(
     description: productDto.description,
   };
 
-  await productsContainer.items.upsert(product);
+  await getProductsContainer().items.upsert(product);
   context.info("Created product entity");
 
   const stock: StockEntity = {
@@ -39,7 +34,7 @@ export async function httpPostProduct(
     count: productDto.count,
   };
 
-  await stocksContainer.items.upsert(stock);
+  await getStocksContainer().items.upsert(stock);
   context.info("Created stock entity");
 
   return {

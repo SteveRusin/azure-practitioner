@@ -1,11 +1,11 @@
-import { productsContainer, stocksContainer } from "./client";
+import {getStocksContainer, getProductsContainer} from "./client";
 import { Product, StockEntity, ProductEntity } from "../models";
 
 export async function getAllProducts(): Promise<Product[]> {
-  const products = await productsContainer.items
+  const products = await getProductsContainer().items
     .readAll<ProductEntity>()
     .fetchAll();
-  const stocks = stocksContainer.items.readAll<StockEntity>().fetchAll();
+  const stocks = getStocksContainer().items.readAll<StockEntity>().fetchAll();
   const [productsResult, stocksResult] = await Promise.all([products, stocks]);
   const stockById: Record<string, number> = {};
   stocksResult.resources.forEach(({ count, product_id }) => {
@@ -26,12 +26,10 @@ export async function getAllProducts(): Promise<Product[]> {
 }
 
 export async function getProductById(id: string): Promise<Product | null> {
-  const product = productsContainer.item(id, id).read<ProductEntity>();
-  const stock = stocksContainer.item(id, id).read<StockEntity>();
+  const product = getProductsContainer().item(id, id).read<ProductEntity>();
+  const stock = getStocksContainer().item(id, id).read<StockEntity>();
 
   const [productResult, stockResult] = await Promise.all([product, stock]);
-
-  console.log(stockResult)
 
   if(!productResult.resource) {
     return null;

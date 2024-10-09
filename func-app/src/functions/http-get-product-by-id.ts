@@ -4,16 +4,18 @@ import {
   HttpResponseInit,
   InvocationContext,
 } from "@azure/functions";
-
-const connection_string = process.env.AZURE_APP_CONFIG_CONNECTION_STRING;
+import { getProductById } from "../db";
 
 import { mockedProducts } from "../mock";
+import { zodMiddleware } from '../middlewares';
 
 export async function httpGetProductById(
   request: HttpRequest,
   context: InvocationContext,
 ): Promise<HttpResponseInit> {
   const productId = request.params["id"];
+
+  context.log(`Got request for product: ${productId}`)
 
   if (productId == null) {
     return {
@@ -24,7 +26,8 @@ export async function httpGetProductById(
     };
   }
 
-  const product = mockedProducts.find((product) => product.id === productId);
+  const product = await getProductById(productId);
+  context.info(`Got product`, productId);
 
   if (product == null) {
     return {
@@ -41,8 +44,8 @@ export async function httpGetProductById(
 }
 
 app.http("http-get-product-by-id", {
-  route: "products/{id}",
+  route: "products/{id:guid}",
   methods: ["GET"],
   authLevel: "anonymous",
-  handler: httpGetProductById,
+  handler: zodMiddleware(httpGetProductById),
 });

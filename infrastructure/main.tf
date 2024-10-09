@@ -1,11 +1,11 @@
 resource "azurerm_resource_group" "front_end_rg" {
   name     = "rg-frontend-sand-ne-001"
-  location = "northeurope"
+  location = var.location
 }
 
 resource "azurerm_storage_account" "front_end_storage_account" {
   name     = "sandboxfrontend01"
-  location = "northeurope"
+  location = var.location
 
   account_replication_type = "LRS"
   account_tier             = "Standard"
@@ -18,13 +18,13 @@ resource "azurerm_storage_account" "front_end_storage_account" {
 }
 
 resource "azurerm_resource_group" "product_service_rg" {
-  location = "northeurope"
+  location = var.location
   name     = "rg-product-service-sand-ne-001"
 }
 
 resource "azurerm_storage_account" "products_service_fa" {
   name     = "stgsangproductsfane003"
-  location = "northeurope"
+  location = var.location
 
   account_replication_type = "LRS"
   account_tier             = "Standard"
@@ -42,7 +42,7 @@ resource "azurerm_storage_share" "products_service_fa" {
 
 resource "azurerm_service_plan" "product_service_plan" {
   name     = "asp-product-service-sand-ne-001"
-  location = "northeurope"
+  location = var.location
 
   os_type  = "Windows"
   sku_name = "Y1"
@@ -53,7 +53,7 @@ resource "azurerm_service_plan" "product_service_plan" {
 resource "azurerm_application_insights" "products_service_fa" {
   name             = "appins-fa-products-service-sand-ne-001"
   application_type = "web"
-  location         = "northeurope"
+  location         = var.location
 
 
   resource_group_name = azurerm_resource_group.product_service_rg.name
@@ -62,7 +62,7 @@ resource "azurerm_application_insights" "products_service_fa" {
 
 resource "azurerm_windows_function_app" "products_service" {
   name     = "fa-products-service-sand-ne-001"
-  location = "northeurope"
+  location = var.location
 
   service_plan_id     = azurerm_service_plan.product_service_plan.id
   resource_group_name = azurerm_resource_group.product_service_rg.name
@@ -82,18 +82,26 @@ resource "azurerm_windows_function_app" "products_service" {
     use_32_bit_worker = true
 
     cors {
-      allowed_origins = ["https://portal.azure.com"]
+      allowed_origins = ["*"]
     }
 
     application_stack {
-      node_version = "~16"
+      node_version = "~18"
     }
+  }
+
+  identity {
+    type = "SystemAssigned"
   }
 
   app_settings = {
     WEBSITE_CONTENTAZUREFILECONNECTIONSTRING = azurerm_storage_account.products_service_fa.primary_connection_string
     WEBSITE_CONTENTSHARE                     = azurerm_storage_share.products_service_fa.name
     FUNCTIONS_WORKER_RUNTIME                 = "node"
+    DB_URI                                   = azurerm_cosmosdb_account.products_account.endpoint
+    DB_NAME                                  = azurerm_cosmosdb_sql_database.products_app.name
+    DOTNET_USE_POLLING_FILE_WATCHER = 1
+    WEBSITE_RUN_FROM_PACKAGE = 1
   }
 
   lifecycle {
@@ -105,5 +113,9 @@ resource "azurerm_windows_function_app" "products_service" {
       tags["hidden-link: /app-insights-conn-string"]
     ]
   }
+}
+
+output "function_app_principal_id" {
+  value = azurerm_windows_function_app.products_service.identity[0].principal_id
 }
 

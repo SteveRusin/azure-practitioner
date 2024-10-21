@@ -19,6 +19,7 @@ export class ManageProductsService extends ApiService {
           headers: {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             'Content-Type': 'text/csv',
+            "x-ms-blob-type": "BlockBlob"
           },
         }),
       ),

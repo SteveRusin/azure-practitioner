@@ -12,7 +12,8 @@
     "build:clean": "npm run clean && npm run build",
     "start:dev": "npm run build:clean && concurrently --kill-others --raw \"npm run build:watch\" \"func start\"",
     "build:watch": "tsc && tsc -w",
-    "db:seed": "ts-node -r tsconfig-paths/register -r ./scripts/source-env ./scripts/db-seed"
+    "db:seed": "ts-node -r tsconfig-paths/register -r ./scripts/source-env ./scripts/db-seed",
+    "test:dev": "vitest"
   },
   "dependencies": {
     "@azure/app-configuration": "^1.7.0",
@@ -30,6 +31,7 @@
     "concurrently": "^9.0.1",
     "rimraf": "^5.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "vitest": "^2.1.4"
   }
 }

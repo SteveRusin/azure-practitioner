@@ -1,10 +1,12 @@
 import { app, InvocationContext } from "@azure/functions";
 import { parse } from "csv-parse";
+import { getProductsSender, getSbClient } from "../sb_client";
 import {
   getParsedContainer,
   getSASQueryParameterForFile,
   getUploadContainer,
 } from "../blob-client";
+import { setTimeout } from "timers/promises";
 
 export async function blobImportProductsFromFile(
   blob: unknown,
@@ -14,6 +16,8 @@ export async function blobImportProductsFromFile(
     return context.log("Cannot process blob parsing");
   }
 
+  const sbClient = getSbClient();
+  const sender = getProductsSender(sbClient);
   const fileName = context.triggerMetadata.name as string;
 
   const csv = parse(blob.toString("utf8"), {
@@ -27,8 +31,15 @@ export async function blobImportProductsFromFile(
   const parsedContainer = getParsedContainer();
   const parsedBlobClient = parsedContainer.getBlockBlobClient(fileName);
 
-  csv.on("data", (product) => {
-    context.log("Reading product ", product);
+  csv.on("data", async (product) => {
+    try {
+      context.log("sending", product);
+      await sender.sendMessages({
+        body: product,
+      });
+    } catch (error) {
+      context.error("cannot sent product", error);
+    }
   });
 
   let resolve;
@@ -53,6 +64,10 @@ export async function blobImportProductsFromFile(
       context.log(`Failed to copy or delete origin ${fileName}`);
       context.log(e);
       reject();
+    } finally {
+      await setTimeout(3_000);
+      await sender.close();
+      await sbClient.close();
     }
 
     context.log("Exiting...");

@@ -110,6 +110,8 @@ resource "azurerm_windows_function_app" "imports_service" {
     WEBSITE_RUN_FROM_PACKAGE                 = 1
     AZURE_STORAGE_ACCOUNT_NAME               = azurerm_storage_account.import_service_fa.name
     AZURE_STORAGE_KEY                        = azurerm_storage_account.import_service_fa.primary_access_key
+    SB_CONNECTION_STRING                     = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
+    SB_PRODUCTS_IMPORT_TOPIC_OR_QUEUE        = azurerm_servicebus_queue.import_products.name
   }
 
   lifecycle {

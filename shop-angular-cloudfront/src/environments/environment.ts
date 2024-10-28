@@ -5,20 +5,21 @@
 import { Config } from './config.interface';
 
 const url = 'http://localhost:7071/api'
+const importUrl = 'http://localhost:7072/api'
 
 export const environment: Config = {
   production: false,
   apiEndpoints: {
     product: url,
     order: 'https://.execute-api.eu-west-1.amazonaws.com/dev',
-    import: 'https://.execute-api.eu-west-1.amazonaws.com/dev',
+    import: importUrl,
     bff: url,
     cart: 'https://.execute-api.eu-west-1.amazonaws.com/dev',
   },
   apiEndpointsEnabled: {
     product: true,
     order: false,
-    import: false,
+    import: true,
     bff: true,
     cart: false,
   },

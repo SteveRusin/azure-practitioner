@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+RESOURSE_GROUP=rg-import-service-sand-ne-001
+NAME=fa-imports-service-sand-ne-001
+SRC=./deployment.zip
+
+az webapp deploy --resource-group $RESOURSE_GROUP \
+  --name $NAME \
+  --src-path $SRC

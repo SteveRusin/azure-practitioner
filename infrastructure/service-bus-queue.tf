@@ -14,9 +14,8 @@ resource "azurerm_servicebus_namespace" "service_bus" {
   zone_redundant                = false /* can be changed to true for premium */
 }
 
-// todo try with topic later
 resource "azurerm_servicebus_queue" "import_products" {
-  name                                    = "import_products_queue"
+  name                                    = var.topic_or_queue_name
   namespace_id                            = azurerm_servicebus_namespace.service_bus.id
   status                                  = "Active"
   enable_partitioning                     = true
@@ -27,6 +26,4 @@ resource "azurerm_servicebus_queue" "import_products" {
   dead_lettering_on_message_expiration    = false
 }
 
-output "sb_topic_or_queue_name" {
-  value = azurerm_servicebus_queue.import_products.name
-}
+

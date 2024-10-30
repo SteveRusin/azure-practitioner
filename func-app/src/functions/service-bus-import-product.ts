@@ -27,3 +27,17 @@ app.serviceBusQueue("service-bus-import-product", {
   queueName: process.env.SB_PRODUCTS_IMPORT_TOPIC_OR_QUEUE,
   handler: serviceBusQueueTrigger,
 });
+
+// app.serviceBusTopic("service-bus-topic-even", {
+//   handler: serviceBusQueueTrigger,
+//   connection: "SB_CONNECTION_STRING",
+//   topicName: process.env.SB_PRODUCTS_IMPORT_TOPIC_OR_QUEUE,
+//   subscriptionName: "sub_even",
+// });
+//
+// app.serviceBusTopic("service-bus-topic-odd", {
+//   handler: serviceBusQueueTrigger,
+//   connection: "SB_CONNECTION_STRING",
+//   topicName: process.env.SB_PRODUCTS_IMPORT_TOPIC_OR_QUEUE,
+//   subscriptionName: "sub_odd",
+// });

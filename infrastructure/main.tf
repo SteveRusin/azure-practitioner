@@ -104,7 +104,7 @@ resource "azurerm_windows_function_app" "products_service" {
     DOTNET_USE_POLLING_FILE_WATCHER          = 1
     WEBSITE_RUN_FROM_PACKAGE                 = 1
     SB_CONNECTION_STRING                     = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
-    SB_PRODUCTS_IMPORT_TOPIC_OR_QUEUE        = azurerm_servicebus_queue.import_products.name
+    SB_PRODUCTS_IMPORT_TOPIC_OR_QUEUE        = var.topic_or_queue_name
   }
 
   lifecycle {

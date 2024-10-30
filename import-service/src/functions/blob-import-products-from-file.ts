@@ -31,11 +31,16 @@ export async function blobImportProductsFromFile(
   const parsedContainer = getParsedContainer();
   const parsedBlobClient = parsedContainer.getBlockBlobClient(fileName);
 
+  let chunkIndex = -1;
   csv.on("data", async (product) => {
     try {
+      chunkIndex++;
       context.log("sending", product);
       await sender.sendMessages({
         body: product,
+        applicationProperties: {
+          index: chunkIndex,
+        },
       });
     } catch (error) {
       context.error("cannot sent product", error);

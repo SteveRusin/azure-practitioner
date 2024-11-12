@@ -11,11 +11,7 @@ resource "azurerm_storage_account" "import_service_fa" {
   account_tier             = "Standard"
   account_kind             = "StorageV2"
 
-  access_tier                     = "Cool"
-  enable_https_traffic_only       = true
-  allow_nested_items_to_be_public = true
-  shared_access_key_enabled       = true
-  public_network_access_enabled   = true
+  access_tier                     = "Hot"
 
   blob_properties {
     cors_rule {
@@ -110,6 +106,8 @@ resource "azurerm_windows_function_app" "imports_service" {
     WEBSITE_RUN_FROM_PACKAGE                 = 1
     AZURE_STORAGE_ACCOUNT_NAME               = azurerm_storage_account.import_service_fa.name
     AZURE_STORAGE_KEY                        = azurerm_storage_account.import_service_fa.primary_access_key
+    SB_CONNECTION_STRING                     = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
+    SB_PRODUCTS_IMPORT_TOPIC_OR_QUEUE        = var.topic_or_queue_name
   }
 
   lifecycle {

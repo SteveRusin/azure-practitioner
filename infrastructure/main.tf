@@ -13,7 +13,7 @@ resource "azurerm_storage_account" "front_end_storage_account" {
   resource_group_name      = azurerm_resource_group.front_end_rg.name
 
   static_website {
-    index_document = "index.html"
+    index_document     = "index.html"
     error_404_document = "index.html"
   }
 }
@@ -101,13 +101,14 @@ resource "azurerm_windows_function_app" "products_service" {
     FUNCTIONS_WORKER_RUNTIME                 = "node"
     DB_URI                                   = azurerm_cosmosdb_account.products_account.endpoint
     DB_NAME                                  = azurerm_cosmosdb_sql_database.products_app.name
-    DOTNET_USE_POLLING_FILE_WATCHER = 1
-    WEBSITE_RUN_FROM_PACKAGE = 1
+    DOTNET_USE_POLLING_FILE_WATCHER          = 1
+    WEBSITE_RUN_FROM_PACKAGE                 = 1
+    SB_CONNECTION_STRING                     = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
+    SB_PRODUCTS_IMPORT_TOPIC_OR_QUEUE        = var.topic_or_queue_name
   }
 
   lifecycle {
     ignore_changes = [
-      app_settings,
       site_config["application_stack"], // workaround for a bug when azure just "kills" your app
       tags["hidden-link: /app-insights-instrumentation-key"],
       tags["hidden-link: /app-insights-resource-id"],

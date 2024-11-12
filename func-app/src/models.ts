@@ -1,11 +1,11 @@
-import { number, string, z } from "zod";
+import { coerce, string, z } from "zod";
 
 export const productSchema = z.object({
   id: string(),
   title: string(),
   description: string(),
-  price: number().positive(),
-  count: number().positive(),
+  price: coerce.number().positive(),
+  count: coerce.number().positive(),
 });
 
 export const productDtoSchema = productSchema.omit({
@@ -25,5 +25,5 @@ export type StockEntity = {
   count: number;
 };
 
-export type ProductDto = z.infer<typeof productDtoSchema>
+export type ProductDto = z.infer<typeof productDtoSchema>;
 export type Product = z.infer<typeof productSchema>;

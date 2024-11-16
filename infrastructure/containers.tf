@@ -112,3 +112,5 @@ resource "azurerm_container_app" "chatbot_ca_docker_acr" {
     value = azurerm_container_registry.acr.admin_password
   }
 }
+
+

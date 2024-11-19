@@ -1,5 +1,9 @@
 <main class="container">
+  <deep-chat class="ai-chat-assistant"
+    [connect]="connect"
+    [requestBodyLimits]="requestBodyLimits"
+    [initialMessages]="initialMessages"></deep-chat>
   @for (product of products(); track $index) {
-    <app-product-item [product]="product" [index]="$index"> </app-product-item>
+  <app-product-item [product]="product" [index]="$index"> </app-product-item>
   }
 </main>

@@ -16,3 +16,10 @@
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
+
+.ai-chat-assistant {
+  position: fixed !important;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10;
+}

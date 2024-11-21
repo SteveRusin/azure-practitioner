@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+HUB_SERVER_NAME=steveneeson21
+TAG=v1
+
+set e
+
+docker login
+
+docker build -t custom-ollama .
+
+docker tag custom-ollama "$HUB_SERVER_NAME/custom-ollama:$TAG"
+docker push "$HUB_SERVER_NAME/custom-ollama:$TAG"

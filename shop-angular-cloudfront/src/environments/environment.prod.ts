@@ -6,7 +6,7 @@ const importUrl =
 
 export const environment: Config = {
   production: true,
-  chatBotUrl: 'todo',
+  chatBotUrl: 'https://myuniqprefix-chatbot-ca-dh-003.blackground-982cbc4c.northeurope.azurecontainerapps.io/api/chat',
   apiEndpoints: {
     product: url,
     order: 'https://.execute-api.eu-west-1.amazonaws.com/dev',
@@ -15,10 +15,10 @@ export const environment: Config = {
     cart: 'https://.execute-api.eu-west-1.amazonaws.com/dev',
   },
   apiEndpointsEnabled: {
-    product: true,
+    product: false,
     order: false,
-    import: true,
-    bff: true,
+    import: false,
+    bff: false,
     cart: false,
   },
 };

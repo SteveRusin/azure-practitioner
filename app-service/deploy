@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+rm ./deploy.zip || true
+zip -r ./deploy ./ >> /dev/null
+
+RESOURSE_GROUP=rg-app-service-sand-ne-001
+NAME=myuniqprefixcontainerappservice
+SRC=./deploy.zip
+
+az webapp deploy --resource-group $RESOURSE_GROUP \
+  --name $NAME \
+  --src-path $SRC

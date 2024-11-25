@@ -1,10 +1,12 @@
 import { Config } from './config.interface';
 
-const url = 'https://fa-products-service-sand-ne-001.azurewebsites.net/api'
-const importUrl = 'https://fa-imports-service-sand-ne-001.azurewebsites.net/api'
+const url = 'https://fa-products-service-sand-ne-001.azurewebsites.net/api';
+const importUrl =
+  'https://fa-imports-service-sand-ne-001.azurewebsites.net/api';
 
 export const environment: Config = {
   production: true,
+  chatBotUrl: 'https://myuniqprefix-chatbot-ca-dh-003.kindpond-e24c3f7b.northeurope.azurecontainerapps.io/api/chat',
   apiEndpoints: {
     product: url,
     order: 'https://.execute-api.eu-west-1.amazonaws.com/dev',
@@ -13,10 +15,10 @@ export const environment: Config = {
     cart: 'https://.execute-api.eu-west-1.amazonaws.com/dev',
   },
   apiEndpointsEnabled: {
-    product: true,
+    product: false,
     order: false,
-    import: true,
-    bff: true,
+    import: false,
+    bff: false,
     cart: false,
   },
 };

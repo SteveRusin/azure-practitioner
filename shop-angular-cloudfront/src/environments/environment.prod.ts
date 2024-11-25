@@ -6,7 +6,7 @@ const importUrl =
 
 export const environment: Config = {
   production: true,
-  chatBotUrl: 'https://myuniqprefix-chatbot-ca-dh-003.blackground-982cbc4c.northeurope.azurecontainerapps.io/api/chat',
+  chatBotUrl: 'https://myuniqprefix-chatbot-ca-dh-003.kindpond-e24c3f7b.northeurope.azurecontainerapps.io/api/chat',
   apiEndpoints: {
     product: url,
     order: 'https://.execute-api.eu-west-1.amazonaws.com/dev',

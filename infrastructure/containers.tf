@@ -75,50 +75,49 @@ resource "azurerm_container_app" "chatbot_ca_docker_hub" {
   }
 }
 
-# this is mapped to app service
-# resource "azurerm_container_app" "chatbot_ca_docker_acr" {
-#   name                         = "myuniqprefix-chatbot-ca-acr-001"
-#   container_app_environment_id = azurerm_container_app_environment.chatbot_cae.id
-#   resource_group_name          = azurerm_resource_group.acr_rg.name
-#   revision_mode                = "Single"
-#
-#   registry {
-#     server               = azurerm_container_registry.acr.login_server
-#     username             = azurerm_container_registry.acr.admin_username
-#     password_secret_name = "acr-password"
-#   }
-#
-#   ingress {
-#     allow_insecure_connections = false
-#     external_enabled           = true
-#     target_port                = 3000
-#
-#     traffic_weight {
-#       percentage      = 100
-#       latest_revision = true
-#     }
-#
-#   }
-#
-#   template {
-#     container {
-#       name   = "my-uniq-prefix-chatbot-container-acr"
-#       image  = "${azurerm_container_registry.acr.login_server}/${var.chatbot_container_name_registry}:${var.chatbot_container_tag_acr}"
-#       cpu    = 0.25
-#       memory = "0.5Gi"
-# command = 
-#
-#       env {
-#         name  = "CONTAINER_REGISTRY_NAME"
-#         value = "Azure Container Registry"
-#       }
-#     }
-#   }
-#
-#   secret {
-#     name  = "acr-password"
-#     value = azurerm_container_registry.acr.admin_password
-#   }
-# }
+# # this is mapped to app service
+resource "azurerm_container_app" "chatbot_ca_docker_acr" {
+  name                         = "myuniqprefix-chatbot-ca-acr-002"
+  container_app_environment_id = azurerm_container_app_environment.chatbot_cae.id
+  resource_group_name          = azurerm_resource_group.acr_rg.name
+  revision_mode                = "Single"
+
+  registry {
+    server               = azurerm_container_registry.acr.login_server
+    username             = azurerm_container_registry.acr.admin_username
+    password_secret_name = "acr-password"
+  }
+
+  ingress {
+    allow_insecure_connections = false
+    external_enabled           = true
+    target_port                = 3000
+
+    traffic_weight {
+      percentage      = 100
+      latest_revision = true
+    }
+
+  }
+
+  template {
+    container {
+      name   = "my-uniq-prefix-chatbot-container-acr"
+      image  = "${azurerm_container_registry.acr.login_server}/${var.chatbot_container_name_registry}:${var.chatbot_container_tag_acr}"
+      cpu    = 0.25
+      memory = "0.5Gi"
+
+      env {
+        name  = "CONTAINER_REGISTRY_NAME"
+        value = "Azure Container Registry"
+      }
+    }
+  }
+
+  secret {
+    name  = "acr-password"
+    value = azurerm_container_registry.acr.admin_password
+  }
+}
 
 

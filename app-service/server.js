@@ -6,7 +6,7 @@ const app = express();
 app.use(
   "/",
   createProxyMiddleware({
-    target: process.env.REDIRECT_TARGET,
+    target: "https://myuniqprefix-chatbot-ca-acr-002.kindpond-e24c3f7b.northeurope.azurecontainerapps.io",
     changeOrigin: true,
   }),
 );

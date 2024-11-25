@@ -22,7 +22,7 @@ variable "chatbot_container_name_dh" {
 }
 
 variable "chatbot_container_name_registry" {
-  default = "myuniqchatbotacr"
+  default = "hello-world-app"
 }
 
 variable "chatbot_container_tag_dh" {
